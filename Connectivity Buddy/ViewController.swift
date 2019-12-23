@@ -10,6 +10,13 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        connectionStatusLabel.textColor = traitCollection.userInterfaceStyle == .light ? .black : .white
+        connectionStatusLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(connectionStatusLabel)
+        
+        connectionStatusLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        connectionStatusLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
         do {
             reachability = try Reachability()
         } catch {
@@ -37,12 +44,10 @@ class ViewController: UIViewController {
         
         if let _reachability = notification.object as? Reachability {
             if _reachability.connection == .unavailable {
-                print("systems down captain")
-//                offline = true
+                connectionStatusLabel.text = "you are not connected to the network"
             }
             else {
-//                offline = false
-                print("she's good to go!")
+                connectionStatusLabel.text = "you have a network connection"
             }
         }
     }
