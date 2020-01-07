@@ -7,6 +7,7 @@ class ViewController: UIViewController {
     
     private var connectionStatusLabel = UILabel()
     private var retryButton = UIButton()
+    private var testConnectionButton = UIButton()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,13 +23,22 @@ class ViewController: UIViewController {
         retryButton.setTitle("Retry connection", for: .normal)
         retryButton.isEnabled = false
         retryButton.alpha = 0.25
-//        retryButton.backgroundColor = traitCollection.userInterfaceStyle == .light ? .lightGray : .gray
+        retryButton.backgroundColor = .lightGray
         retryButton.addTarget(self, action: #selector(handleRetryButtonTapped), for: .touchUpInside)
         view.addSubview(retryButton)
         
         retryButton.topAnchor.constraint(equalTo: connectionStatusLabel.bottomAnchor, constant: 48).isActive = true
         retryButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         retryButton.widthAnchor.constraint(equalToConstant: 152).isActive = true
+        
+        testConnectionButton.setTitle("Test connection", for: .normal)
+        testConnectionButton.translatesAutoresizingMaskIntoConstraints = false
+        testConnectionButton.backgroundColor = .lightGray
+        testConnectionButton.addTarget(self, action: #selector(handleTestConnectionButtonTapped), for: .touchUpInside)
+        view.addSubview(testConnectionButton)
+        
+        testConnectionButton.topAnchor.constraint(equalTo: retryButton.bottomAnchor, constant: 48).isActive = true
+        testConnectionButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         do {
             reachability = try Reachability()
@@ -48,6 +58,22 @@ class ViewController: UIViewController {
         startReachabilityNotifications()
         retryButton.setTitle("Retrying..", for: .normal)
         retryButton.isEnabled = false
+    }
+    
+    @objc func handleTestConnectionButtonTapped() {
+
+        if let url = URL(string: "https://sv443.net/jokeapi/category/Any") {
+            
+            testConnectionButton.setTitle("Testing...", for: .normal)
+            testConnectionButton.isEnabled = false
+        
+            let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+                
+                
+            }
+            
+            task.resume()
+        }
     }
     
     // MARK: - Offline Handler
