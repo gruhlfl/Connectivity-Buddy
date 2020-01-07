@@ -11,7 +11,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        connectionStatusLabel.textColor = traitCollection.userInterfaceStyle == .light ? .black : .white
+//        connectionStatusLabel.textColor = traitCollection.userInterfaceStyle == .light ? .black : .white
         connectionStatusLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(connectionStatusLabel)
         
@@ -22,7 +22,7 @@ class ViewController: UIViewController {
         retryButton.setTitle("Retry connection", for: .normal)
         retryButton.isEnabled = false
         retryButton.alpha = 0.25
-        retryButton.backgroundColor = traitCollection.userInterfaceStyle == .light ? .lightGray : .gray
+//        retryButton.backgroundColor = traitCollection.userInterfaceStyle == .light ? .lightGray : .gray
         retryButton.addTarget(self, action: #selector(handleRetryButtonTapped), for: .touchUpInside)
         view.addSubview(retryButton)
         
