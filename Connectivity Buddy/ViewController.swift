@@ -69,9 +69,31 @@ class ViewController: UIViewController {
         
             let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
                 
-                
+                if let urlResponse = response as? HTTPURLResponse  {
+                    
+                    if 199 < urlResponse.statusCode && urlResponse.statusCode < 300 {
+                        
+                        DispatchQueue.main.async {
+                            
+                            self.testConnectionButton.setTitle("Network call successful!", for: .normal)
+                            
+                            let _ = Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { _ in
+                                
+                                self.testConnectionButton.setTitle("Test connection", for: .normal)
+                                self.testConnectionButton.isEnabled = true
+                                return
+                            }
+                        }
+                    }
+                    self.testConnectionButton.setTitle("Network call failed", for: .normal)
+                    
+                    let _ = Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { _ in
+
+                        self.testConnectionButton.setTitle("Test connection", for: .normal)
+                        self.testConnectionButton.isEnabled = true
+                    }
+                }
             }
-            
             task.resume()
         }
     }
