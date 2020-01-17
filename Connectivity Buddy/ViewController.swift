@@ -69,9 +69,23 @@ class ViewController: UIViewController {
         
             let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
                 
+                if error != nil {
+                    
+                    DispatchQueue.main.async {
+                        
+                        self.testConnectionButton.setTitle("Network call failed", for: .normal)
+                        
+                        let _ = Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { _ in
+
+                            self.testConnectionButton.setTitle("Test connection", for: .normal)
+                            self.testConnectionButton.isEnabled = true
+                        }
+                    }
+                }
+                                
                 if let urlResponse = response as? HTTPURLResponse  {
                     
-                    if 199 < urlResponse.statusCode && urlResponse.statusCode < 300 {
+                    if urlResponse.statusCode == 200 {
                         
                         DispatchQueue.main.async {
                             
@@ -81,16 +95,20 @@ class ViewController: UIViewController {
                                 
                                 self.testConnectionButton.setTitle("Test connection", for: .normal)
                                 self.testConnectionButton.isEnabled = true
-                                return
                             }
                         }
                     }
-                    self.testConnectionButton.setTitle("Network call failed", for: .normal)
-                    
-                    let _ = Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { _ in
+                    else {
+                        DispatchQueue.main.async {
+                            
+                            self.testConnectionButton.setTitle("Network call failed", for: .normal)
+                            
+                            let _ = Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { _ in
 
-                        self.testConnectionButton.setTitle("Test connection", for: .normal)
-                        self.testConnectionButton.isEnabled = true
+                                self.testConnectionButton.setTitle("Test connection", for: .normal)
+                                self.testConnectionButton.isEnabled = true
+                            }
+                        }
                     }
                 }
             }
